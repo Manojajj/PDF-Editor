@@ -71,7 +71,7 @@ def add_watermark(pdf_file, watermark_text):
         page = reader.getPage(page_num)
         page.merge_page(watermark_page)
         writer.addPage(page)
-
+    
     buffer = BytesIO()
     writer.write(buffer)
     buffer.seek(0)
@@ -81,11 +81,11 @@ def add_watermark(pdf_file, watermark_text):
 def encrypt_pdf(pdf_file, password):
     reader = PdfFileReader(pdf_file)
     writer = PdfFileWriter()
-
+    
     for page_num in range(reader.numPages):
         page = reader.getPage(page_num)
         writer.addPage(page)
-
+    
     writer.encrypt(password)
     buffer = BytesIO()
     writer.write(buffer)
@@ -97,12 +97,12 @@ def decrypt_pdf(pdf_file, password):
     reader = PdfFileReader(pdf_file)
     if reader.isEncrypted:
         reader.decrypt(password)
-
+    
     writer = PdfFileWriter()
     for page_num in range(reader.numPages):
         page = reader.getPage(page_num)
         writer.addPage(page)
-
+    
     buffer = BytesIO()
     writer.write(buffer)
     buffer.seek(0)
@@ -122,7 +122,7 @@ def extract_images(pdf_file):
 def main():
     st.title("PDF Editor Tool")
 
-    menu = ["Create PDF", "Extract Text", "Merge PDFs", "Split PDF", "Rotate PDF",
+    menu = ["Create PDF", "Extract Text", "Merge PDFs", "Split PDF", "Rotate PDF", 
             "Add Watermark", "Encrypt PDF", "Decrypt PDF", "Extract Images"]
     choice = st.sidebar.selectbox("Menu", menu)
 
@@ -226,15 +226,4 @@ def main():
     elif choice == "Extract Images":
         st.subheader("Extract Images from PDF")
         pdf_file = st.file_uploader("Upload PDF", type="pdf")
-        if st.button("Extract Images"):
-            images = extract_images(pdf_file)
-            for i, img in enumerate(images):
-                st.download_button(
-                    label=f"Download Image {i+1}",
-                    data=img,
-                    file_name=f"image_{i+1}.png",
-                    mime="image/png"
-                )
-
-if __name__ == '__main__':
-    main()
+        if st.button("Extract
