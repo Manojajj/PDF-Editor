@@ -226,4 +226,15 @@ def main():
     elif choice == "Extract Images":
         st.subheader("Extract Images from PDF")
         pdf_file = st.file_uploader("Upload PDF", type="pdf")
-        if st.button("Extract
+        if st.button("Extract Images"):
+            images = extract_images(pdf_file)
+            for i, img in enumerate(images):
+                st.download_button(
+                    label=f"Download Image {i+1}",
+                    data=img,
+                    file_name=f"image_{i+1}.png",
+                    mime="image/png"
+                )
+
+if __name__ == '__main__':
+    main()
