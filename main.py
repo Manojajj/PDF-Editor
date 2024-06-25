@@ -3,7 +3,6 @@ from PyPDF2 import PdfFileReader, PdfFileWriter
 from io import BytesIO
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
-from pdf2image import convert_from_bytes
 
 # Helper function to create a PDF with text
 def create_pdf(text):
@@ -108,22 +107,11 @@ def decrypt_pdf(pdf_file, password):
     buffer.seek(0)
     return buffer
 
-# Helper function to extract images from PDF
-def extract_images(pdf_file):
-    images = convert_from_bytes(pdf_file.read())
-    image_buffers = []
-    for i, image in enumerate(images):
-        buffer = BytesIO()
-        image.save(buffer, format="PNG")
-        buffer.seek(0)
-        image_buffers.append(buffer)
-    return image_buffers
-
 def main():
     st.title("PDF Editor Tool")
 
     menu = ["Create PDF", "Extract Text", "Merge PDFs", "Split PDF", "Rotate PDF", 
-            "Add Watermark", "Encrypt PDF", "Decrypt PDF", "Extract Images"]
+            "Add Watermark", "Encrypt PDF", "Decrypt PDF"]
     choice = st.sidebar.selectbox("Menu", menu)
 
     if choice == "Create PDF":
@@ -222,19 +210,6 @@ def main():
                 file_name="decrypted_pdf.pdf",
                 mime="application/pdf"
             )
-
-    elif choice == "Extract Images":
-        st.subheader("Extract Images from PDF")
-        pdf_file = st.file_uploader("Upload PDF", type="pdf")
-        if st.button("Extract Images"):
-            images = extract_images(pdf_file)
-            for i, img in enumerate(images):
-                st.download_button(
-                    label=f"Download Image {i+1}",
-                    data=img,
-                    file_name=f"image_{i+1}.png",
-                    mime="image/png"
-                )
 
 if __name__ == '__main__':
     main()
